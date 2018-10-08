@@ -28,6 +28,9 @@ namespace apollo {
 namespace common {
 namespace math {
 
+// @param Vec2d &center
+// @param const double length
+// @param const double width
 AABox2d::AABox2d(const Vec2d &center, const double length, const double width)
     : center_(center),
       length_(length),
@@ -38,11 +41,14 @@ AABox2d::AABox2d(const Vec2d &center, const double length, const double width)
   CHECK_GT(width_, -kMathEpsilon);
 }
 
+    // @param Vec2d &one_corner
+    // @param const Vec2d &opposite_corner
 AABox2d::AABox2d(const Vec2d &one_corner, const Vec2d &opposite_corner)
     : AABox2d((one_corner + opposite_corner) / 2.0,
               std::abs(one_corner.x() - opposite_corner.x()),
               std::abs(one_corner.y() - opposite_corner.y())) {}
 
+    // @param const std::vector<Vec2d> &points
 AABox2d::AABox2d(const std::vector<Vec2d> &points) {
   CHECK(!points.empty());
   double min_x = points[0].x();
@@ -63,6 +69,7 @@ AABox2d::AABox2d(const std::vector<Vec2d> &points) {
   half_width_ = width_ / 2.0;
 }
 
+    // @param std::vector<Vec2d> *const corners
 void AABox2d::GetAllCorners(std::vector<Vec2d> *const corners) const {
   CHECK_NOTNULL(corners)->clear();
   corners->reserve(4);
@@ -72,11 +79,15 @@ void AABox2d::GetAllCorners(std::vector<Vec2d> *const corners) const {
   corners->emplace_back(center_.x() - half_length_, center_.y() - half_width_);
 }
 
+    // @param const Vec2d &point
+    // @return bool
 bool AABox2d::IsPointIn(const Vec2d &point) const {
   return std::abs(point.x() - center_.x()) <= half_length_ + kMathEpsilon &&
          std::abs(point.y() - center_.y()) <= half_width_ + kMathEpsilon;
 }
 
+    // @param const Vec2d &point
+    // @return bool
 bool AABox2d::IsPointOnBoundary(const Vec2d &point) const {
   const double dx = std::abs(point.x() - center_.x());
   const double dy = std::abs(point.y() - center_.y());
@@ -86,6 +97,8 @@ bool AABox2d::IsPointOnBoundary(const Vec2d &point) const {
           dx <= half_length_ + kMathEpsilon);
 }
 
+    // @param const Vec2d & point
+    // @return double
 double AABox2d::DistanceTo(const Vec2d &point) const {
   const double dx = std::abs(point.x() - center_.x()) - half_length_;
   const double dy = std::abs(point.y() - center_.y()) - half_width_;
@@ -98,6 +111,8 @@ double AABox2d::DistanceTo(const Vec2d &point) const {
   return hypot(dx, dy);
 }
 
+    // @param const AABox2d &box
+    // @return double
 double AABox2d::DistanceTo(const AABox2d &box) const {
   const double dx =
       std::abs(box.center_x() - center_.x()) - box.half_length() - half_length_;
@@ -112,6 +127,8 @@ double AABox2d::DistanceTo(const AABox2d &box) const {
   return hypot(dx, dy);
 }
 
+    // @param AABox2d &box
+    // @return bool
 bool AABox2d::HasOverlap(const AABox2d &box) const {
   return std::abs(box.center_x() - center_.x()) <=
              box.half_length() + half_length_ &&
@@ -119,8 +136,12 @@ bool AABox2d::HasOverlap(const AABox2d &box) const {
              box.half_width() + half_width_;
 }
 
+    // @param Vec2d &one_corner
+    // @param const Vec2d &opposite_corner
+    // @return AABox2d
 void AABox2d::Shift(const Vec2d &shift_vec) { center_ += shift_vec; }
 
+    // @param const AABox2d &other_box
 void AABox2d::MergeFrom(const AABox2d &other_box) {
   const double x1 = std::min(min_x(), other_box.min_x());
   const double x2 = std::max(max_x(), other_box.max_x());
@@ -133,6 +154,7 @@ void AABox2d::MergeFrom(const AABox2d &other_box) {
   half_width_ = width_ / 2.0;
 }
 
+    // @param Vec2d &other_point
 void AABox2d::MergeFrom(const Vec2d &other_point) {
   const double x1 = std::min(min_x(), other_point.x());
   const double x2 = std::max(max_x(), other_point.x());
