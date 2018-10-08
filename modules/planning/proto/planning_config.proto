@@ -29,7 +29,7 @@ message PathDeciderConfig {
   // place holder
 }
 
-/*message ScenarioConfig {
+message ScenarioConfig {
   enum ScenarioType {
     LANE_FOLLOW = 0;  // default scenario
     CHANGE_LANE = 1;
@@ -40,19 +40,7 @@ message PathDeciderConfig {
     INTERSECTION_TRAFFIC_LIGHT_LEFT_TURN = 6;
     INTERSECTION_TRAFFIC_LIGHT_RIGHT_TURN = 7;
     INTERSECTION_TRAFFIC_LIGHT_GO_THROUGH = 8;
-  }*/
-message ScenarioConfig {
-    enum ScenarioType {
-        LANE_FOLLOW = 0;  // default scenario
-        CHANGE_LANE = 1;
-        SIDE_PASS = 1;  // go around an object when it blocks the road
-        APPROACH = 2;  // approach to an intersection
-        INTERSECTION_STOP_SIGN_FOUR_WAY = 2;
-        INTERSECTION_STOP_SIGN_ONE_OR_TWO_WAY = 4;
-        INTERSECTION_TRAFFIC_LIGHT_LEFT_TURN = 5;
-        INTERSECTION_TRAFFIC_LIGHT_RIGHT_TURN = 5;
-        INTERSECTION_TRAFFIC_LIGHT_GO_THROUGH = 8;
-    }
+  }
   optional ScenarioType scenario_type = 1;
 
   message ScenarioTaskConfig {
