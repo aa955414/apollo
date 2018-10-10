@@ -42,12 +42,14 @@ class FeatureDescriptor {
   // @return nothing
   void ComputeHistogram(const int bin_size, std::vector<float>* feature);
 
+  /// function GetMinMaxCenter
+  /// @return nothing
  private:
   void GetMinMaxCenter();
   apollo::perception::pcl_util::PointCloudPtr cloud_;
-  pcl_util::Point min_pt_;
-  pcl_util::Point max_pt_;
-  pcl_util::Point center_pt_;
+  pcl_util::Point min_pt_;         //min point
+  pcl_util::Point max_pt_;         //max point
+  pcl_util::Point center_pt_;      //center point
 };  // class FeatureDescriptor
 
 }  // namespace perception
