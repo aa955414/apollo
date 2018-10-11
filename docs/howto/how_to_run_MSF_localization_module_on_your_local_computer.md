@@ -61,7 +61,7 @@ The localization module will finish initialization and start publishing localiza
 ```
 First, the visualization tool will generate a series of cache files from the localization map, which will be stored in the apollo/data/map_visual directory.
 
-Then it will receive the topics blew and draw them on screen.
+Then it will receive the topics below and draw them on screen.
  - /apollo/sensor/velodyne64/compensator/PointCloud2
  - /apollo/localization/msf_lidar
  - /apollo/localization/msf_gnss
