@@ -4,7 +4,7 @@
 
 Fuzz test is an automated software testing technique that involves providing unexpected or random data to target program, and monitor for exceptions such as crashes, memory leaks, or failing build-in assertions. This [commit](https://github.com/ApolloAuto/apollo/commit/28e55b367b630ecdb540f46d9a14c393cb584532), adds fuzzing support to the apollo platform, which includes:
 
-* A new command `apllo.sh build_fuzz_test` to build all the fuzz test cases, each of which tests one of the Apollo modules or functions by constantly exploring internal program states with mutated input. 
+* A new command `apollo.sh build_fuzz_test` to build all the fuzz test cases, each of which tests one of the Apollo modules or functions by constantly exploring internal program states with mutated input. 
 * A new `CROSSTOOL` for `clang-6.0` which is required to build these fuzz tests with [sanitizer](https://github.com/google/sanitizers) support. 
 * An external repository [BaiduXLab/libprotobuf-mutator](https://github.com/BaiduXLab/libprotobuf-mutator), that provides structure(protobuf)-aware mutations, which greatly improve the efficiency of fuzzing. 
 * Several fuzz test cases that are ready to be compiled and run, covered part of the functionalities in `/control` and `prediction` modules. 
@@ -17,7 +17,7 @@ Source code of the fuzz test cases are in `/apollo/modules/tools/fuzz/`, and I w
 
 To test the functionality of `control` module, ideally we want to provide mutated `Localization`, `ADCTrajectory`, `Chassis`, and `PadMessage` for the `control` module to `ProduceControlCommand`, and see if any input message will trigger unexpected memory corruptions or leaks. If you haven't heard about [libfuzzer](https://llvm.org/docs/LibFuzzer.html) before, it's recommended to try out some simple [examples](https://github.com/google/fuzzer-test-suite/blob/master/tutorial/libFuzzerTutorial.md), which will help you better understand the code we are about to look at. 
 
-We first create a target function to fuzz, which implements the logics mentioned above. As shown in `control_fuzz.cc`, from line `77` to `101`. The `FuzzTarget()` function takes four types of message, and feed them to the control module, before calling the `ProduceControlCommand()`. 
+We first create a target function to fuzz, which implements the logics mentioned above. As shown in `control_fuzz.cc`, from line `77` to `101`. The `FuzzTarget()` function takes four types of message, and feeds them to the control module, before calling the `ProduceControlCommand()`. 
 
 ```
 bool ControlFuzz::FuzzTarget(
