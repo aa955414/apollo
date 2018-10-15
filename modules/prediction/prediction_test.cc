@@ -20,6 +20,8 @@
 namespace apollo {
 namespace prediction {
 
+  // @param PredictionTest
+  // @param Simple
 TEST(PredictionTest, Simple) {
   Prediction prediction;
   EXPECT_EQ(prediction.Name(), "prediction");
