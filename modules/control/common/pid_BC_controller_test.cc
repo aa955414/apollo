@@ -21,6 +21,11 @@
 #include "modules/control/proto/control_conf.pb.h"
 #include "modules/control/proto/pid_conf.pb.h"
 
+/**
+* @namespace apollo::control
+* @brief apollo::control
+*/
+
 namespace apollo {
 namespace control {
 
