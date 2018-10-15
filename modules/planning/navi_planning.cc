@@ -67,6 +67,8 @@ Status NaviPlanning::Init() {
 
   planner_dispatcher_->Init();
 
+  // @param FLAGS_traffic_rule_config_filename
+  // @param traffic_rule_configs_
   CHECK(apollo::common::util::GetProtoFromFile(
       FLAGS_traffic_rule_config_filename, &traffic_rule_configs_))
       << "Failed to load traffic rule config file "
@@ -75,6 +77,7 @@ Status NaviPlanning::Init() {
   // clear planning status
   GetPlanningStatus()->Clear();
 
+  // @param FLAGS_planning_adapter_config_filename
   if (!AdapterManager::Initialized()) {
     AdapterManager::Init(FLAGS_planning_adapter_config_filename);
   }
@@ -88,6 +91,7 @@ Status NaviPlanning::Init() {
   CHECK_ADAPTER(TrafficLightDetection);
   CHECK_ADAPTER(PlanningPad);
 
+  // @param NaviPlanning::OnPad
   AdapterManager::AddPlanningPadCallback(&NaviPlanning::OnPad, this);
 
   planner_ = planner_dispatcher_->DispatchPlanner();
@@ -99,7 +103,10 @@ Status NaviPlanning::Init() {
 
   return planner_->Init(config_);
 }
-
+  // @param const uint32_t
+  // @param const TrajectoryPoint& planning_start_point
+  // @param const double start_time
+  // @param const VehicleState& vehicle_state
 Status NaviPlanning::InitFrame(const uint32_t sequence_num,
                                const TrajectoryPoint& planning_start_point,
                                const double start_time,
@@ -114,6 +121,7 @@ Status NaviPlanning::InitFrame(const uint32_t sequence_num,
   return Status::OK();
 }
 
+  // @param const ros::TimerEvent&
 void NaviPlanning::OnTimer(const ros::TimerEvent&) {
   RunOnce();
 
@@ -124,6 +132,7 @@ void NaviPlanning::OnTimer(const ros::TimerEvent&) {
   }
 }
 
+  // @param const PadMessage& pad
 void NaviPlanning::OnPad(const PadMessage& pad) {
   ADEBUG << "Received Planning Pad Msg:" << pad.DebugString();
   AERROR_IF(!pad.has_action()) << "pad message check failed!";
@@ -131,6 +140,7 @@ void NaviPlanning::OnPad(const PadMessage& pad) {
   is_received_pad_msg_ = true;
 }
 
+  // @param drvie_action
 void NaviPlanning::ProcessPadMsg(DrivingAction drvie_action) {
   if (config_.planner_type() == NAVI) {
     std::map<std::string, uint32_t> lane_id_to_priority;
@@ -485,6 +495,7 @@ void NaviPlanning::RunOnce() {
   FrameHistory::instance()->Add(seq_num, std::move(frame_));
 }
 
+  // @param ADCTrajectory* trajectory_pb
 void NaviPlanning::SetFallbackTrajectory(ADCTrajectory* trajectory_pb) {
   CHECK_NOTNULL(trajectory_pb);
 
@@ -502,6 +513,7 @@ void NaviPlanning::SetFallbackTrajectory(ADCTrajectory* trajectory_pb) {
   }
 }
 
+  // @param planning_internal::Debug* debug
 void NaviPlanning::ExportReferenceLineDebug(planning_internal::Debug* debug) {
   if (!FLAGS_enable_record_debug) {
     return;
@@ -621,6 +633,7 @@ void NaviPlanning::Stop() {
   GetPlanningStatus()->Clear();
 }
 
+  // @param const localization::LocalizationEstimate& localization
 NaviPlanning::VehicleConfig NaviPlanning::ComputeVehicleConfigFromLocalization(
     const localization::LocalizationEstimate& localization) const {
   NaviPlanning::VehicleConfig vehicle_config;
