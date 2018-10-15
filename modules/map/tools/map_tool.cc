@@ -30,6 +30,7 @@ DEFINE_string(output_dir, "/tmp/", "output map directory");
 
 using apollo::hdmap::Map;
 
+///@param Map* map_pb
 static void ShiftMap(Map* map_pb) {
   for (auto& lane : *(map_pb->mutable_lane())) {
     for (auto& segment : *(lane.mutable_central_curve()->mutable_segment())) {
@@ -65,6 +66,7 @@ static void ShiftMap(Map* map_pb) {
   }
 }
 
+///@param const Map& map_pb
 static void OutputMap(const Map& map_pb) {
   const std::string txt_file = FLAGS_output_dir + "/base_map.txt";
   const std::string bin_file = FLAGS_output_dir + "/base_map.bin";
@@ -72,6 +74,8 @@ static void OutputMap(const Map& map_pb) {
   CHECK(apollo::common::util::SetProtoToBinaryFile(map_pb, bin_file));
 }
 
+///@param int32_t argc
+//@param char** argv
 int main(int32_t argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
   FLAGS_alsologtostderr = true;
