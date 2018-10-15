@@ -23,6 +23,7 @@
 namespace apollo {
 namespace localization {
 
+///@param const LocalizationEstimate &localization
 void LocalizationBase::PublishPoseBroadcastTF(
     const LocalizationEstimate &localization) {
   if (!tf2_broadcaster_) {
