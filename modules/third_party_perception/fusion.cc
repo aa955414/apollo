@@ -39,6 +39,8 @@ using apollo::common::math::Vec2d;
 using apollo::perception::PerceptionObstacle;
 using apollo::perception::PerceptionObstacles;
 
+  /// @param obstacle
+  /// @return result
 std::vector<Vec2d> PerceptionObstacleToVectorVec2d(
     const PerceptionObstacle& obstacle) {
   std::vector<Vec2d> result;
@@ -48,6 +50,9 @@ std::vector<Vec2d> PerceptionObstacleToVectorVec2d(
   return result;
 }
 
+  /// @param obstacle_1
+  /// @param obstacle_2
+  /// @return polygon_1.HasOverlap(polygon_2)
 bool HasOverlap(const PerceptionObstacle& obstacle_1,
                 const PerceptionObstacle& obstacle_2) {
   common::math::Polygon2d polygon_1(
@@ -57,6 +62,9 @@ bool HasOverlap(const PerceptionObstacle& obstacle_1,
   return polygon_1.HasOverlap(polygon_2);
 }
 
+  /// @param obstacle
+  /// @param obstacles
+  /// @return false
 bool HasOverlap(const PerceptionObstacle& obstacle,
                 const PerceptionObstacles& obstacles) {
   for (const auto& current_obstacle : obstacles.perception_obstacle()) {
@@ -67,6 +75,9 @@ bool HasOverlap(const PerceptionObstacle& obstacle,
   return false;
 }
 
+  /// @param mobileye_obstacles
+  /// @param radar_obstacles
+  /// @return mobileye_obstacles_fusion
 PerceptionObstacles MobileyeRadarFusion(
     const PerceptionObstacles& mobileye_obstacles,
     const PerceptionObstacles& radar_obstacles) {
