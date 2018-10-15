@@ -58,6 +58,7 @@ Status Guardian::Start() {
 
 void Guardian::Stop() { timer_.stop(); }
 
+///@param const ros::TimerEvent&
 void Guardian::OnTimer(const ros::TimerEvent&) {
   ADEBUG << "Timer is triggered: publish Guardian result";
   bool safety_mode_triggered = false;
@@ -78,18 +79,21 @@ void Guardian::OnTimer(const ros::TimerEvent&) {
   AdapterManager::PublishGuardian(guardian_cmd_);
 }
 
+///@param const Chassis& message
 void Guardian::OnChassis(const Chassis& message) {
   ADEBUG << "Received chassis data: run chassis callback.";
   std::lock_guard<std::mutex> lock(mutex_);
   chassis_.CopyFrom(message);
 }
 
+///@param const SystemStatus& message
 void Guardian::OnSystemStatus(const SystemStatus& message) {
   ADEBUG << "Received monitor data: run monitor callback.";
   std::lock_guard<std::mutex> lock(mutex_);
   system_status_.CopyFrom(message);
 }
 
+///@param const ControlCommand& message
 void Guardian::OnControl(const ControlCommand& message) {
   ADEBUG << "Received control data: run control command callback.";
   std::lock_guard<std::mutex> lock(mutex_);
