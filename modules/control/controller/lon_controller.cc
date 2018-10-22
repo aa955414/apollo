@@ -90,6 +90,7 @@ void LonController::Stop() { CloseLogFile(); }
 
 LonController::~LonController() { CloseLogFile(); }
 
+  /// @param const ControlConf *control_conf
 Status LonController::Init(const ControlConf *control_conf) {
   control_conf_ = control_conf;
   if (control_conf_ == nullptr) {
@@ -115,6 +116,7 @@ Status LonController::Init(const ControlConf *control_conf) {
   return Status::OK();
 }
 
+  /// @param const LonContorllerConf &lon_controller_conf
 void LonController::SetDigitalFilterPitchAngle(
     const LonControllerConf &lon_controller_conf) {
   double cutoff_freq =
@@ -123,6 +125,7 @@ void LonController::SetDigitalFilterPitchAngle(
   SetDigitalFilter(ts, cutoff_freq, &digital_filter_pitch_angle_);
 }
 
+   /// @param const LonContorllerConf &lon_controller_conf
 void LonController::LoadControlCalibrationTable(
     const LonControllerConf &lon_controller_conf) {
   const auto &control_table = lon_controller_conf.calibration_table();
@@ -140,6 +143,10 @@ void LonController::LoadControlCalibrationTable(
       << "Fail to load control calibration table";
 }
 
+   /// @param const LocalizationEstimate *localization
+  /// @param const Chassis *chassis
+  /// @param ADCTrajectory *planning_published_trajectory
+  /// @param ControlCommand *cmd
 Status LonController::ComputeControlCommand(
     const localization::LocalizationEstimate *localization,
     const canbus::Chassis *chassis,
@@ -311,8 +318,12 @@ Status LonController::Reset() {
   return Status::OK();
 }
 
+  /// @return name_
 std::string LonController::Name() const { return name_; }
 
+  /// @param const TrajectoryAnalyzer
+  /// @const double preview_time
+  ///SimpleLongitudinalDebug *debug
 void LonController::ComputeLongitudinalErrors(
     const TrajectoryAnalyzer *trajectory_analyzer, const double preview_time,
     SimpleLongitudinalDebug *debug) {
@@ -362,6 +373,9 @@ void LonController::ComputeLongitudinalErrors(
   debug->set_current_station(s_matched);
 }
 
+  /// @param double ts
+  /// @param double cutoff_freq
+  /// @param common::DigitalFilter *digital_filter
 void LonController::SetDigitalFilter(double ts, double cutoff_freq,
                                      common::DigitalFilter *digital_filter) {
   std::vector<double> denominators;
@@ -370,6 +384,7 @@ void LonController::SetDigitalFilter(double ts, double cutoff_freq,
   digital_filter->set_coefficients(denominators, numerators);
 }
 
+  /// @param SimpleLongitudinalDebug *debug
 void LonController::GetPathRemain(SimpleLongitudinalDebug *debug) {
   int stop_index = 0;
   while (stop_index < trajectory_message_->trajectory_point_size()) {
