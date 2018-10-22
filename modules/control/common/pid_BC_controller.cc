@@ -22,6 +22,12 @@
 
 #include "modules/common/math/math_utils.h"
 
+/**
+* @namespace apollo::control
+* @brief apollo::control
+*/
+
+
 namespace apollo {
 namespace control {
 

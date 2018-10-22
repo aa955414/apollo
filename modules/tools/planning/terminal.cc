@@ -41,6 +41,7 @@ void help() {
   AINFO << "\tother number: print help.";
 }
 
+/// @param int action
 void send(int action) {
   PadMessage pad;
   pad.set_action(DrivingAction(action));
@@ -95,17 +96,24 @@ void terminal_thread_func() {
 
 }  // namespace
 
+/// @param int argc
+/// @param char **argv
 int main(int argc, char **argv) {
   google::InitGoogleLogging(argv[0]);
   FLAGS_alsologtostderr = true;
   FLAGS_v = 3;
 
+  /// @param &argc
+  /// @param &argv
+  /// @param true 
   google::ParseCommandLineFlags(&argc, &argv, true);
 
   using apollo::common::adapter::AdapterConfig;
   using apollo::common::adapter::AdapterManager;
   using apollo::common::adapter::AdapterManagerConfig;
 
+  /// @param argc
+  /// @param argv 
   ros::init(argc, argv, "planning_terminal");
 
   AdapterManagerConfig config;
@@ -116,9 +124,13 @@ int main(int argc, char **argv) {
     sub_config->set_type(AdapterConfig::PLANNING_PAD);
   }
 
+  
+  /// @param config
   AdapterManager::Init(config);
 
   help();
+
+  /// @param terminal_thread_func
   std::thread terminal_thread(terminal_thread_func);
   ros::spin();
   terminal_thread.join();

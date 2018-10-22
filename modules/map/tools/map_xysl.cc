@@ -62,6 +62,7 @@ namespace hdmap {
     }                                            \
   } while (0);
 
+//@return ostream os
 std::ostream &operator<<(
     std::ostream &os,
     const ::google::protobuf::RepeatedPtrField<apollo::hdmap::Id> &ids) {
@@ -84,6 +85,7 @@ std::ostream &operator<<(
 
 class MapUtil {
  public:
+  ///@param const std::string &overlap_id
   const OverlapInfo *GetOverlap(const std::string &overlap_id) const {
     auto ret = HDMapUtil::BaseMap().GetOverlapById(MakeMapId(overlap_id));
     AERROR_IF(ret == nullptr) << "failed to find overlap[" << overlap_id << "]";
@@ -100,10 +102,17 @@ class MapUtil {
   GET_ELEMENT_BY_ID(YieldSign);
 
   template <class T>
+  ///@param const T &t
   void Print(const T &t) {
     std::cout << t.DebugString();
   }
-
+  
+  ///@param const PointENU &point
+  ///@param std::string *land_id
+  ///@param double *s
+  ///@param double *l
+  ///@param double *heading
+  ///@return int 0
   int PointToSL(const PointENU &point, std::string *lane_id, double *s,
                 double *l, double *heading) const {
     QUIT_IF(lane_id == nullptr, -1, ERROR, "arg lane id is null");
@@ -118,6 +127,12 @@ class MapUtil {
     return 0;
   }
 
+  ///@param LaneInfoConstPtr lane_ptr
+  ///@param const double s
+  ///@param const double l
+  ///@param PointENU *point
+  ///@param double *heading
+  ///@return int 0
   int SLToPoint(LaneInfoConstPtr lane_ptr, const double s, const double l,
                 PointENU *point, double *heading) const {
     QUIT_IF(point == nullptr, -1, ERROR, "arg point is null");
@@ -133,6 +148,12 @@ class MapUtil {
     return 0;
   }
 
+  ///@param const apollo::common::math::Vec2d &vec2d
+  ///@param const std::string &lane_id
+  ///@param double *s
+  ///@param double *l
+  ///@param double *heading
+  ///@returns int 0
   int LaneProjection(const apollo::common::math::Vec2d &vec2d,
                      const std::string &lane_id, double *s, double *l,
                      double *heading) const {
@@ -147,6 +168,7 @@ class MapUtil {
     return 0;
   }
 
+  ///@param const std::string &overlap_id
   void PrintOverlap(const std::string &overlap_id) {
     const auto *overlap_ptr = GetOverlap(FLAGS_overlap);
     if (overlap_ptr == nullptr) {
@@ -189,7 +211,10 @@ class MapUtil {
     }
   }
 
+  ///@param const std::string &lane_id
   void PrintLane(const std::string &lane_id) { PrintLane(GetLane(lane_id)); }
+
+  ///@param LaneInfoConstPtr lane_ptr
   void PrintLane(LaneInfoConstPtr lane_ptr) {
     const auto &lane = lane_ptr->lane();
     PointENU start_point;
@@ -274,6 +299,9 @@ class MapUtil {
 }  // namespace hdmap
 }  // namespace apollo
 
+///@param int argc
+///@param char *argv[]
+///@return int 0
 int main(int argc, char *argv[]) {
   google::InitGoogleLogging(argv[0]);
   google::ParseCommandLineFlags(&argc, &argv, true);
