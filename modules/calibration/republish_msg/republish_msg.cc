@@ -27,6 +27,7 @@ using apollo::common::adapter::AdapterManager;
 using apollo::common::Status;
 using apollo::common::ErrorCode;
 
+///@return "republish_msg"
 std::string RepublishMsg::Name() const { return "republish_msg"; }
 
 Status RepublishMsg::Init() {
@@ -46,10 +47,12 @@ Status RepublishMsg::Init() {
   return Status::OK();
 }
 
+///@param const drivers::gnss::InsStat& msg
 void RepublishMsg::OnInsStat(const drivers::gnss::InsStat& msg) {
   position_type_ = msg.pos_type();
 }
 
+///@param const localization::Gps& msg
 void RepublishMsg::OnGps(const localization::Gps& msg) {
   if (msg.has_localization()) {
     const auto pose_msg = msg.localization();
