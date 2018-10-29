@@ -22,6 +22,7 @@
 #include "modules/common/log.h"
 #include "modules/guardian/common/guardian_gflags.h"
 #include "ros/include/ros/ros.h"
+#include "gtest/gtest.h"
 
 namespace apollo {
 namespace guardian {
@@ -54,6 +55,11 @@ Status Guardian::Start() {
                                        &Guardian::OnTimer, this);
 
   return Status::OK();
+}
+
+TEST(StartTest, PositiveNos)
+{
+	ASSERT_EQ(Status::OK(), Guardian::Start());
 }
 
 void Guardian::Stop() { timer_.stop(); }
