@@ -39,7 +39,7 @@
 #include "modules/planning/planner/rtk/rtk_replay_planner.h"
 #include "modules/planning/reference_line/reference_line_provider.h"
 #include "modules/planning/toolkits/deciders/traffic_decider.h"
-
+#include "gtest/gtest.h"
 namespace apollo {
 namespace planning {
 
@@ -61,7 +61,8 @@ bool IsDifferentRouting(const RoutingResponse& first,
                         const RoutingResponse& second) {
   if (first.has_header() && second.has_header()) {
     if (first.header().sequence_num() != second.header().sequence_num()) {
-      return true;
+        ASSERT_INT_EQ (1, first.header().sequence_num() != second.header().sequence_num());
+            return true;
     }
     if (first.header().timestamp_sec() != second.header().timestamp_sec()) {
       return true;
