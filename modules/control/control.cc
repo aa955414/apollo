@@ -41,6 +41,7 @@ using apollo::common::time::Clock;
 using apollo::localization::LocalizationEstimate;
 using apollo::planning::ADCTrajectory;
 
+///@return FLAGS_control_node_name
 std::string Control::Name() const { return FLAGS_control_node_name; }
 
 Status Control::Init() {
@@ -85,6 +86,7 @@ Status Control::Init() {
   return Status::OK();
 }
 
+///@return Status::OK()
 Status Control::Start() {
   // set initial vehicle state by cmd
   // need to sleep, because advertised channel is not ready immediately
@@ -110,6 +112,7 @@ Status Control::Start() {
   return Status::OK();
 }
 
+///@param const PadMessage &pad
 void Control::OnPad(const PadMessage &pad) {
   pad_msg_ = pad;
   ADEBUG << "Received Pad Msg:" << pad.DebugString();
@@ -124,6 +127,7 @@ void Control::OnPad(const PadMessage &pad) {
   pad_received_ = true;
 }
 
+///@param const common::monitor::MonitorMessage &monitor_message
 void Control::OnMonitor(
     const common::monitor::MonitorMessage &monitor_message) {
   for (const auto &item : monitor_message.item()) {
@@ -134,6 +138,7 @@ void Control::OnMonitor(
   }
 }
 
+///@param ControlCommand *control_command
 Status Control::ProduceControlCommand(ControlCommand *control_command) {
   Status status = CheckInput();
   // check data
@@ -218,6 +223,7 @@ Status Control::ProduceControlCommand(ControlCommand *control_command) {
   return status;
 }
 
+///@param const ros::TimerEvent &
 void Control::OnTimer(const ros::TimerEvent &) {
   double start_timestamp = Clock::NowInSeconds();
 
@@ -255,6 +261,7 @@ void Control::OnTimer(const ros::TimerEvent &) {
   SendCmd(&control_command);
 }
 
+///@return Status
 Status Control::CheckInput() {
   AdapterManager::Observe();
   auto localization_adapter = AdapterManager::GetLocalization();
@@ -298,6 +305,7 @@ Status Control::CheckInput() {
   return Status::OK();
 }
 
+///@return Status
 Status Control::CheckTimestamp() {
   if (!FLAGS_enable_input_timestamp_check || FLAGS_is_control_test_mode) {
     ADEBUG << "Skip input timestamp check by gflags.";
@@ -338,6 +346,7 @@ Status Control::CheckTimestamp() {
   return Status::OK();
 }
 
+///@param ControlCommand *control_command
 void Control::SendCmd(ControlCommand *control_command) {
   // set header
   if (AdapterManager::GetPlanning() &&

@@ -23,7 +23,8 @@
 namespace apollo {
 namespace drivers {
 namespace canbus {
-
+  /// @param ByteTest
+  /// @param CopyConstructor
 TEST(ByteTest, CopyConstructor) {
   unsigned char byte_value = 0xFF;
   Byte value(&byte_value);
@@ -31,7 +32,8 @@ TEST(ByteTest, CopyConstructor) {
   EXPECT_EQ(another_value.to_hex_string(), value.to_hex_string());
   EXPECT_EQ(another_value.to_binary_string(), value.to_binary_string());
 }
-
+  /// @param ByteTest
+  /// @param SetBit
 TEST(ByteTest, SetBit) {
   unsigned char byte_value = 0xFF;
   Byte value(&byte_value);
@@ -51,7 +53,8 @@ TEST(ByteTest, SetBit) {
   EXPECT_TRUE(value.is_bit_1(6));
   EXPECT_FALSE(value.is_bit_1(7));
 }
-
+  /// @param ByteTest
+  /// @param SetValue
 TEST(ByteTest, SetValue) {
   unsigned char byte_value = 0x1A;
   Byte value(&byte_value);
@@ -73,7 +76,8 @@ TEST(ByteTest, SetValue) {
   value.set_value(0x07, -1, 1);
   EXPECT_EQ(0x1A, value.get_byte());
 }
-
+  /// @param ByteTest
+  /// @param GetValue
 TEST(ByteTest, GetValue) {
   unsigned char byte_value = 0x1A;
   Byte value(&byte_value);
@@ -83,7 +87,8 @@ TEST(ByteTest, GetValue) {
   EXPECT_EQ(0x00, value.get_byte(-1, 1));
   EXPECT_EQ(0x1A, value.get_byte(0, 10));
 }
-
+  /// @param ByteTest
+  /// @param SetGetHighLowBit
 TEST(ByteTest, SetGetHighLowBit) {
   unsigned char byte_value = 0x37;
   Byte value(&byte_value);
@@ -94,7 +99,8 @@ TEST(ByteTest, SetGetHighLowBit) {
   EXPECT_EQ(0x0B, value.get_byte_high_4_bits());
   EXPECT_EQ(0x0B, value.get_byte_low_4_bits());
 }
-
+  /// @param ByteTest
+  /// @param ByteToString
 TEST(ByteTest, ByteToString) {
   unsigned char value = 0x34;
   EXPECT_EQ("34", Byte::byte_to_hex(value));
