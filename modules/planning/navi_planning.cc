@@ -38,6 +38,7 @@
 #include "modules/planning/planner/rtk/rtk_replay_planner.h"
 #include "modules/planning/reference_line/reference_line_provider.h"
 #include "modules/planning/toolkits/deciders/traffic_decider.h"
+#include "gtest/gtest.h"
 
 namespace apollo {
 namespace planning {
@@ -119,6 +120,14 @@ Status NaviPlanning::InitFrame(const uint32_t sequence_num,
     return status;
   }
   return Status::OK();
+}
+
+TEST(InitFrame, PositiveNos)
+{
+  ASSERT_EQ(Status::OK(), NaviPlaning::InitFrame(const uint32_t sequence_num,
+                               const TrajectoryPoint& planning_start_point,
+                               const double start_time,
+			       const VehicleState& vehicle_state)
 }
 
   // @param const ros::TimerEvent&
