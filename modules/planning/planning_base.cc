@@ -65,7 +65,7 @@ bool PlanningBase::IsVehicleStateValid(const VehicleState& vehicle_state) {
 
   TEST(PlanningBase, Bool)
   {
-    ASSERT_EQ(false, PlanningBase::IsVehicleStateValid(vehicle_state.x()));
+    ASSERT_EQ(false, PlanningBase::IsVehicleStateValid(std::isnan(vehicle_state.x()));
   }
 
 void PlanningBase::PublishPlanningPb(ADCTrajectory* trajectory_pb,
