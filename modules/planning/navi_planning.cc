@@ -121,7 +121,7 @@ Status NaviPlanning::InitFrame(const uint32_t sequence_num,
   }
   return Status::OK();
 }
-
+  /*
 TEST(InitFrame, PositiveNos)
 {
   ASSERT_EQ(Status::OK(), NaviPlaning::InitFrame(const uint32_t sequence_num,
@@ -129,7 +129,7 @@ TEST(InitFrame, PositiveNos)
                                const double start_time,
 			       const VehicleState& vehicle_state)
 }
-
+  */
   // @param const ros::TimerEvent&
 void NaviPlanning::OnTimer(const ros::TimerEvent&) {
   RunOnce();
