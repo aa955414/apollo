@@ -21,7 +21,6 @@
 #include <vector>
 
 #include "google/protobuf/repeated_field.h"
-#include "gtest/gtest.h"
 
 #include "modules/common/adapters/adapter_manager.h"
 #include "modules/common/math/quaternion.h"
@@ -62,11 +61,6 @@ bool PlanningBase::IsVehicleStateValid(const VehicleState& vehicle_state) {
   }
   return true;
 }
-
-  TEST(PlanningBase, Bool)
-  {
-    ASSERT_EQ(false, PlanningBase::IsVehicleStateValid(std::isnan(vehicle_state.x()));
-  }
 
 void PlanningBase::PublishPlanningPb(ADCTrajectory* trajectory_pb,
                                      double timestamp) {
