@@ -40,6 +40,8 @@
 #include "modules/perception/traffic_light/onboard/tl_preprocessor_subnode.h"
 #include "modules/perception/traffic_light/onboard/tl_proc_subnode.h"
 
+#include "gtest/gtest.h"
+
 namespace apollo {
 namespace perception {
 
@@ -49,6 +51,10 @@ using apollo::common::ErrorCode;
 
 std::string Perception::Name() const { return "perception"; }
 
+  TEST(PerceptionName, Positive)
+  {
+    ASSERT_EQ("perception", Perception::Name());
+  }
 Status Perception::Init() {
   AdapterManager::Init(FLAGS_perception_adapter_config_filename);
 
