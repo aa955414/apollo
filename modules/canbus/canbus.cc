@@ -109,6 +109,10 @@ Status Canbus::Init() {
   return Status::OK();
 }
 
+TEST(initTest, Positive){
+  ASSERT_EQ(Status::OK(), Canbus::Init());
+}
+
 Status Canbus::Start() {
   // 1. init and start the can card hardware
   if (can_client_->Start() != ErrorCode::OK) {
