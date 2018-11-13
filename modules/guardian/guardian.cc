@@ -63,6 +63,11 @@ TEST(StartTest, PositiveNos)
 	ASSERT_EQ(Status::OK(), Guardian::Start());
 }
 
+  TEST(InitializeTest, CheckOK)
+{
+	ASSERT_EQ(Status::OK(), Guardian::Init());
+}
+
 void Guardian::Stop() { timer_.stop(); }
 
 ///@param const ros::TimerEvent&
