@@ -60,6 +60,7 @@ Status LidarExChecker::Init() {
 
   return Status::OK();
 }
+ASSERT_EQ(Status::OK(), LidarExChecker::Init());
 
 ///@return bool true/false
 bool LidarExChecker::GetExtrinsics() {
@@ -118,6 +119,7 @@ void LidarExChecker::VisualizeClouds() {
   }
   pcl_vis->spin();
 }
+EXPECT_EQ(true, LidarExChecker::GetExtrinsics());
 
 ///@param const sensor_msgs::PointCloud2& message
 void LidarExChecker::OnPointCloud(const sensor_msgs::PointCloud2& message) {
@@ -205,6 +207,7 @@ void LidarExChecker::OnInsStat(const drivers::gnss::InsStat& message) {
 }
 
 Status LidarExChecker::Start() { return Status::OK(); }
+ASSERT_EQ(Status::OK(), LidarExChecker::Start());
 
 void LidarExChecker::Stop() {}
 
