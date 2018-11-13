@@ -44,7 +44,7 @@ namespace data {
 namespace {
 using apollo::common::adapter::AdapterManager;
 using apollo::canbus::Chassis;
-
+  using "gtest/gtest.h";
   /// @param signal_num
 void OnSigInt(int32_t signal_num) {
   // only response for ctrl + c
@@ -195,3 +195,5 @@ int main(int32_t argc, char **argv) {
 
   return 0;
 }
+EXPECT_EQ(0, main(int32_t argc, char **argv))
+EXPECT_EQ(1, main(int32_t argc, char **argv))
