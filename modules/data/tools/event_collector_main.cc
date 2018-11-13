@@ -45,6 +45,7 @@ namespace {
 using apollo::common::adapter::AdapterManager;
 using apollo::canbus::Chassis;
 
+  /// @param signal_num
 void OnSigInt(int32_t signal_num) {
   // only response for ctrl + c
   if (signal_num != SIGINT) {
@@ -62,6 +63,8 @@ void OnSigInt(int32_t signal_num) {
 
 class EventCollector {
  public:
+  /// @param argc
+  /// @param **argv
   void Init(int32_t argc, char **argv) {
     signal(SIGINT, OnSigInt);
 
@@ -121,11 +124,13 @@ class EventCollector {
   std::vector<std::tuple<double, std::string>> events_;
   Chassis::DrivingMode last_driving_mode_;
 
+  /// @param event
   void OnDriveEvent(const apollo::common::DriveEvent& event) {
     // The header time is the real event time.
     SaveEvent(event.header().timestamp_sec(), "DriveEvent", event.event());
   }
 
+  /// @param chassis
   void OnChassis(const Chassis& chassis) {
     // Save event when driving_mode changes from COMPLETE_AUTO_DRIVE to
     // EMERGENCY_MODE which is taken as a disengagement.
@@ -136,6 +141,8 @@ class EventCollector {
     last_driving_mode_ = chassis.driving_mode();
   }
 
+  /// @param monitor_msg
+  /// @param time_sec
   void OnMonitorMessage(
       const apollo::common::monitor::MonitorMessage& monitor_msg) {
     using apollo::common::monitor::MonitorMessageItem;
@@ -149,6 +156,9 @@ class EventCollector {
     }
   }
 
+  /// @param timestamp_sec
+  /// @param type
+  /// @param description
   void SaveEvent(const double timestamp_sec, const std::string& type,
                  const std::string& description = "") {
     const auto msg = apollo::common::util::StrCat(
@@ -171,6 +181,9 @@ class EventCollector {
 }  // namespace data
 }  // namespace apollo
 
+/// @param argc
+/// @param **argv
+/// @return 0
 int main(int32_t argc, char **argv) {
   google::InitGoogleLogging(argv[0]);
   google::ParseCommandLineFlags(&argc, &argv, true);
