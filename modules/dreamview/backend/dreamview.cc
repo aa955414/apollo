@@ -38,6 +38,7 @@ using apollo::common::util::PathExists;
 using apollo::hdmap::BaseMapFile;
 
 std::string Dreamview::Name() const { return FLAGS_dreamview_module_name; }
+ASSERT_EQ(FLAGS_dreamview_module_name, Dreamview::Name());
 
 void Dreamview::TerminateProfilingMode(const ros::TimerEvent& event) {
   Stop();
@@ -132,12 +133,14 @@ Status Dreamview::Init() {
 
   return Status::OK();
 }
+EXPECT_EQ(Status::OK(), Dreamview::Init());
 
 Status Dreamview::Start() {
   sim_world_updater_->Start();
   point_cloud_updater_->Start();
   return Status::OK();
 }
+ASSERT_EQ(Status::OK(), Dreamview::Start());
 
 void Dreamview::Stop() {
   server_->close();
