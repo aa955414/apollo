@@ -43,6 +43,7 @@ using apollo::planning::ADCTrajectory;
 
 ///@return FLAGS_control_node_name
 std::string Control::Name() const { return FLAGS_control_node_name; }
+ASSERT_EQ(FLAGS_control_node_name, Control::Name());
 
 Status Control::Init() {
   init_time_ = Clock::NowInSeconds();
@@ -85,6 +86,8 @@ Status Control::Init() {
 
   return Status::OK();
 }
+EXPECT_EQ(Status::OK(), Status Control::Init());
+
 
 ///@return Status::OK()
 Status Control::Start() {
@@ -111,6 +114,7 @@ Status Control::Start() {
 
   return Status::OK();
 }
+ASSERT_EQ(Status::OK(), Control::Start());
 
 ///@param const PadMessage &pad
 void Control::OnPad(const PadMessage &pad) {
@@ -304,6 +308,7 @@ Status Control::CheckInput() {
 
   return Status::OK();
 }
+EXPECT_EQ(Status::OK(), Control::CheckInput());
 
 ///@return Status
 Status Control::CheckTimestamp() {
@@ -345,6 +350,7 @@ Status Control::CheckTimestamp() {
   }
   return Status::OK();
 }
+EXPECT_EQ(Status::OK(), Control::CheckTimestamp());
 
 ///@param ControlCommand *control_command
 void Control::SendCmd(ControlCommand *control_command) {
