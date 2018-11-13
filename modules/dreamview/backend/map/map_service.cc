@@ -178,6 +178,7 @@ const hdmap::HDMap *MapService::SimMap() const {
 }
 
 bool MapService::MapReady() const { return HDMap() && SimMap(); }
+ASSERT_EQ(HDMap() && SimMap(), MapService::MapReady());
 
 void MapService::CollectMapElementIds(const PointENU &point, double radius,
                                       MapElementIds *ids) const {
