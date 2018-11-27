@@ -189,7 +189,7 @@ const hdmap::HDMap *MapService::SimMap() const {
   return use_sim_map_ ? HDMapUtil::SimMapPtr() : HDMapUtil::BaseMapPtr();
 }
 
-bool MapService::MapReady() const { return HDMap() && SimMap();
+bool MapService::MapReady() const { return HDMap() && SimMap(); }
 
   /// @param const PointENU &point
   /// @param double radius
