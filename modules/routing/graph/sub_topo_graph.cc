@@ -25,6 +25,7 @@
 #include "modules/routing/graph/topo_node.h"
 
 #include "modules/common/log.h"
+#include "gtest/gtest.h"
 
 namespace apollo {
 namespace routing {
@@ -35,10 +36,16 @@ const double MIN_DIFF_LENGTH = 0.1e-6;             // in meters
 const double MIN_INTERNAL_FOR_NODE = 0.01;         // in meters
 const double MIN_POTENTIAL_LANE_CHANGE_LEN = 3.0;  // in meters
 
+  /// @param s1
+  /// @param s2
+  /// @return std::fabs(s1 - s2) < MIN_DIFF_LENGTH;
 bool IsCloseEnough(double s1, double s2) {
   return std::fabs(s1 - s2) < MIN_DIFF_LENGTH;
 }
 
+  /// @param topo_node
+  /// @param origin_range
+  /// @param block_range
 void MergeBlockRange(const TopoNode* topo_node,
                      const std::vector<NodeSRange>& origin_range,
                      std::vector<NodeSRange>* block_range) {
@@ -65,6 +72,9 @@ void MergeBlockRange(const TopoNode* topo_node,
   }
 }
 
+  /// @param topo_node
+  /// @param origin_range
+  /// @param valid_range
 void GetSortedValidRange(const TopoNode* topo_node,
                          const std::vector<NodeSRange>& origin_range,
                          std::vector<NodeSRange>* valid_range) {
@@ -85,6 +95,9 @@ void GetSortedValidRange(const TopoNode* topo_node,
   }
 }
 
+  /// @param from_node
+  /// @param to_node
+  /// @return return (end_s - start_s > MIN_POTENTIAL_LANE_CHANGE_LEN);
 bool IsReachable(const TopoNode* from_node, const TopoNode* to_node) {
   double start_s = to_node->StartS() / to_node->Length() * from_node->Length();
   start_s = std::max(start_s, from_node->StartS());
@@ -93,8 +106,11 @@ bool IsReachable(const TopoNode* from_node, const TopoNode* to_node) {
   return (end_s - start_s > MIN_POTENTIAL_LANE_CHANGE_LEN);
 }
 
+  ASSERT_EQ(end_s - start_s > MIN_POTENTIAL_LANE_CHANGE_LEN, IsReachable(const TopoNode* from_node, const TopoNode* to_node))
 }  // namespace
 
+  /// @param black_map
+  /// @param valid_range
 SubTopoGraph::SubTopoGraph(
     const std::unordered_map<const TopoNode*, std::vector<NodeSRange> >&
         black_map) {
@@ -116,6 +132,8 @@ SubTopoGraph::SubTopoGraph(
 
 SubTopoGraph::~SubTopoGraph() {}
 
+  /// @param edge
+  /// @param sub_edges
 void SubTopoGraph::GetSubInEdgesIntoSubGraph(
     const TopoEdge* edge,
     std::unordered_set<const TopoEdge*>* const sub_edges) const {
@@ -136,6 +154,9 @@ void SubTopoGraph::GetSubInEdgesIntoSubGraph(
   }
 }
 
+  /// @param edge
+  /// @param sub_edges
+  /// @param sub_nodes
 void SubTopoGraph::GetSubOutEdgesIntoSubGraph(
     const TopoEdge* edge,
     std::unordered_set<const TopoEdge*>* const sub_edges) const {
@@ -156,6 +177,8 @@ void SubTopoGraph::GetSubOutEdgesIntoSubGraph(
   }
 }
 
+  /// @param topo_node
+  /// @return sorted_vec[index].GetTopoNode()
 const TopoNode* SubTopoGraph::GetSubNodeWithS(const TopoNode* topo_node,
                                               double s) const {
   const auto& map_iter = sub_node_range_sorted_map_.find(topo_node);
@@ -171,6 +194,8 @@ const TopoNode* SubTopoGraph::GetSubNodeWithS(const TopoNode* topo_node,
   return sorted_vec[index].GetTopoNode();
 }
 
+  /// @param topo_node
+  /// @param valid_range
 void SubTopoGraph::InitSubNodeByValidRange(
     const TopoNode* topo_node, const std::vector<NodeSRange>& valid_range) {
   // Attention: no matter topo node has valid_range or not,
@@ -209,6 +234,8 @@ void SubTopoGraph::InitSubNodeByValidRange(
   }
 }
 
+  /// @param topo_node
+  /// @param sub_nodes
 void SubTopoGraph::InitSubEdge(const TopoNode* topo_node) {
   std::unordered_set<TopoNode*> sub_nodes;
   if (!GetSubNodes(topo_node, &sub_nodes)) {
@@ -221,6 +248,8 @@ void SubTopoGraph::InitSubEdge(const TopoNode* topo_node) {
   }
 }
 
+  /// @param sub_node
+  /// @param origin_edge
 void SubTopoGraph::InitInSubNodeSubEdge(
     TopoNode* const sub_node,
     const std::unordered_set<const TopoEdge*> origin_edge) {
@@ -248,6 +277,8 @@ void SubTopoGraph::InitInSubNodeSubEdge(
   }
 }
 
+  /// @param sub_node
+  /// @param origin_edge
 void SubTopoGraph::InitOutSubNodeSubEdge(
     TopoNode* const sub_node,
     const std::unordered_set<const TopoEdge*> origin_edge) {
@@ -275,6 +306,10 @@ void SubTopoGraph::InitOutSubNodeSubEdge(
   }
 }
 
+  /// @param node
+  /// @param sub_nodes
+  /// @return false
+  /// @return true
 bool SubTopoGraph::GetSubNodes(
     const TopoNode* node,
     std::unordered_set<TopoNode*>* const sub_nodes) const {
@@ -287,6 +322,7 @@ bool SubTopoGraph::GetSubNodes(
   return true;
 }
 
+  /// @param topo_node
 void SubTopoGraph::AddPotentialEdge(const TopoNode* topo_node) {
   std::unordered_set<TopoNode*> sub_nodes;
   if (!GetSubNodes(topo_node, &sub_nodes)) {
@@ -298,6 +334,8 @@ void SubTopoGraph::AddPotentialEdge(const TopoNode* topo_node) {
   }
 }
 
+  /// @param sub_node
+  /// @param origin_edge
 void SubTopoGraph::AddPotentialInEdge(
     TopoNode* const sub_node,
     const std::unordered_set<const TopoEdge*> origin_edge) {
@@ -331,6 +369,8 @@ void SubTopoGraph::AddPotentialInEdge(
   }
 }
 
+  /// @param sub_node
+  /// @param origin_edge
 void SubTopoGraph::AddPotentialOutEdge(
     TopoNode* const sub_node,
     const std::unordered_set<const TopoEdge*> origin_edge) {
