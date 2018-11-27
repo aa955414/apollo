@@ -74,7 +74,7 @@ static void OutputMap(const Map& map_pb) {
   CHECK(apollo::common::util::SetProtoToBinaryFile(map_pb, bin_file));
 }
 
-///@param int32_t argc
+///@param int32_t argc - arguments for main
 //@param char** argv
 int main(int32_t argc, char** argv) {
   google::InitGoogleLogging(argv[0]);
