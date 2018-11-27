@@ -37,11 +37,13 @@ PolynomialXd::PolynomialXd(const std::vector<double>& params)
 
 std::uint32_t PolynomialXd::order() const { return params_.size() - 1; }
 
+///@param const std::vector<double>& params
 void PolynomialXd::SetParams(const std::vector<double>& params) {
   CHECK(!params.empty());
   params_ = params;
 }
 
+///@return vector<double> params_
 const std::vector<double>& PolynomialXd::params() const { return params_; }
 
 PolynomialXd PolynomialXd::DerivedFrom(const PolynomialXd& base) {
@@ -57,6 +59,7 @@ PolynomialXd PolynomialXd::DerivedFrom(const PolynomialXd& base) {
   return PolynomialXd(params);
 }
 
+///@param const PolynomialXd& base, const double intercept
 PolynomialXd PolynomialXd::IntegratedFrom(const PolynomialXd& base,
                                           const double intercept) {
   std::vector<double> params;
@@ -68,6 +71,8 @@ PolynomialXd PolynomialXd::IntegratedFrom(const PolynomialXd& base,
   return PolynomialXd(params);
 }
 
+///@return double result
+///@param const double value
 double PolynomialXd::operator()(const double value) const {
   double result = 0.0;
   for (auto rit = params_.rbegin(); rit != params_.rend(); ++rit) {
@@ -77,6 +82,8 @@ double PolynomialXd::operator()(const double value) const {
   return result;
 }
 
+///@return double params_[index]
+///@param const std::uint32_t index
 double PolynomialXd::operator[](const std::uint32_t index) const {
   if (index >= params_.size()) {
     return 0.0;

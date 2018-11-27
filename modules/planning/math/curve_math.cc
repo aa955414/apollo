@@ -26,6 +26,8 @@ namespace apollo {
 namespace planning {
 
 // kappa = (dx * d2y - dy * d2x) / [(dx * dx + dy * dy)^(3/2)]
+///@return double a / b
+///@param const double dx, const double d2x, const double dy, const double d2y
 double CurveMath::ComputeCurvature(const double dx, const double d2x,
                                    const double dy, const double d2y) {
   const double a = dx * d2y - dy * d2x;
@@ -35,6 +37,8 @@ double CurveMath::ComputeCurvature(const double dx, const double d2x,
   return a / b;
 }
 
+///@return double (b * d - 3.0 * a * c) / (d * d * d)
+///@param const double dx, const double d2x, const double d3x, const double dy, const double d2y, const double d3y
 double CurveMath::ComputeCurvatureDerivative(const double dx, const double d2x,
                                              const double d3x, const double dy,
                                              const double d2y,
