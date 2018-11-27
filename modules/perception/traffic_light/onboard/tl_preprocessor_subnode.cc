@@ -33,6 +33,7 @@ namespace traffic_light {
 using apollo::common::util::GetProtoFromFile;
 using common::adapter::AdapterManager;
 
+///@return bool false/true
 bool TLPreprocessorSubnode::InitInternal() {
   RegisterFactoryBoundaryProjection();
   if (!InitSharedData()) {
@@ -69,6 +70,7 @@ bool TLPreprocessorSubnode::InitInternal() {
   return true;
 }
 
+///@param bool true/false
 bool TLPreprocessorSubnode::InitSharedData() {
   CHECK_NOTNULL(shared_data_manager_);
 
@@ -85,6 +87,7 @@ bool TLPreprocessorSubnode::InitSharedData() {
   return true;
 }
 
+///@return bool true/false
 bool TLPreprocessorSubnode::InitPreprocessor() {
   if (!preprocessor_.Init()) {
     AERROR << "TLPreprocessorSubnode init preprocessor failed";
@@ -102,6 +105,8 @@ bool TLPreprocessorSubnode::InitHdmap() {
   return true;
 }
 
+///@return bool true/false
+///@param const std::shared_ptr<ImageLights> &data, const CameraId &camera_id, double timestamp
 bool TLPreprocessorSubnode::AddDataAndPublishEvent(
     const std::shared_ptr<ImageLights> &data, const CameraId &camera_id,
     double timestamp) {
@@ -132,6 +137,7 @@ bool TLPreprocessorSubnode::AddDataAndPublishEvent(
   return true;
 }
 
+///@param const sensor_msgs::Image &msg
 void TLPreprocessorSubnode::SubLongFocusCamera(const sensor_msgs::Image &msg) {
   AdapterManager::Observe();
   SubCameraImage(AdapterManager::GetImageLong()->GetLatestObservedPtr(),
@@ -139,6 +145,7 @@ void TLPreprocessorSubnode::SubLongFocusCamera(const sensor_msgs::Image &msg) {
   PERF_FUNCTION("SubLongFocusCamera");
 }
 
+///@param const sensor_msgs::Image &msg
 void TLPreprocessorSubnode::SubShortFocusCamera(const sensor_msgs::Image &msg) {
   AdapterManager::Observe();
   SubCameraImage(AdapterManager::GetImageShort()->GetLatestObservedPtr(),
@@ -146,6 +153,7 @@ void TLPreprocessorSubnode::SubShortFocusCamera(const sensor_msgs::Image &msg) {
   PERF_FUNCTION("SubShortFocusCamera");
 }
 
+///@param boost::shared_ptr<const sensor_msgs::Image> msg, CameraId camera_id
 void TLPreprocessorSubnode::SubCameraImage(
     boost::shared_ptr<const sensor_msgs::Image> msg, CameraId camera_id) {
   // Only one image could be used in a while.
@@ -257,6 +265,8 @@ void TLPreprocessorSubnode::SubCameraImage(
   }
 }
 
+///@param double ts, CarPose *pose, std::vector<Signal> *signals
+///@return bool true/false
 bool TLPreprocessorSubnode::GetSignals(double ts, CarPose *pose,
                                        std::vector<Signal> *signals) {
   // get pose
@@ -286,6 +296,9 @@ bool TLPreprocessorSubnode::GetSignals(double ts, CarPose *pose,
   }
   return true;
 }
+
+///@param const double ts, CarPose *pose
+///@return bool true/false
 bool TLPreprocessorSubnode::GetCarPose(const double ts, CarPose *pose) {
   Eigen::Matrix4d pose_matrix;
 
@@ -297,6 +310,9 @@ bool TLPreprocessorSubnode::GetCarPose(const double ts, CarPose *pose) {
   pose->set_pose(pose_matrix);
   return true;
 }
+
+///@return bool true/false
+///@param ImageLightsPtr image_lights
 bool TLPreprocessorSubnode::VerifyLightsProjection(
     ImageLightsPtr image_lights) {
   std::vector<Signal> signals;
@@ -318,6 +334,8 @@ bool TLPreprocessorSubnode::VerifyLightsProjection(
 
   return true;
 }
+
+///@param double ts
 void TLPreprocessorSubnode::CameraSelection(double ts) {
   const double current_ts = TimeUtil::GetCurrentTime();
   AINFO << "current_ts: " << GLOG_TIMESTAMP(current_ts)

@@ -28,6 +28,8 @@ using apollo::hdmap::HDMapUtil;
 // HDMapInput
 HDMapInput::HDMapInput() {}
 
+///@return bool false/true
+///@param const Eigen::Matrix4d &pointd, std::vector<apollo::hdmap::Signal> *signals
 bool HDMapInput::GetSignals(const Eigen::Matrix4d &pointd,
                             std::vector<apollo::hdmap::Signal> *signals) {
   auto hdmap = HDMapUtil::BaseMapPtr();
